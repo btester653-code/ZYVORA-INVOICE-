@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02050a">
+<meta name="description" content="ZYVORA FTTH professional invoice generator — single-file GitHub Pages version">
+
+<title>ZYVORA FTTH Invoice Generator</title>
+<style>
+:root{--bg:#02050a;--card:#07111d;--line:#123653;--blue:#20a8ff;--cyan:#55ddff;--text:#edf8ff;--muted:#8ca9bd;--green:#20d47a;--red:#ff5570}
+*{box-sizing:border-box}html,body{margin:0;background:radial-gradient(circle at 15% 10%,#08233a 0,#02050a 35%,#010307 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(120deg,transparent 20%,rgba(32,168,255,.06) 40%,transparent 60%);animation:flow 7s linear infinite}@keyframes flow{0%{transform:translateX(-60%)}100%{transform:translateX(60%)}}
+.splash{position:fixed;z-index:9999;inset:0;background:#02050a;display:grid;place-items:center;transition:opacity .5s}.splash.hide{opacity:0;pointer-events:none}.splashBox{text-align:center}.bolt{font-size:62px;filter:drop-shadow(0 0 20px #20a8ff);animation:pulse 1s infinite alternate}@keyframes pulse{to{transform:scale(1.08);filter:drop-shadow(0 0 35px #55ddff)}}.splash h1{margin:8px 0;font-size:28px;letter-spacing:3px}.splash p{color:var(--muted)}
+.app{max-width:1500px;margin:auto;padding:18px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:12px}.brand img{width:54px;height:54px;object-fit:contain;border-radius:14px}.brand h1{font-size:21px;margin:0}.brand small{color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.top .actions{justify-content:flex-end}.top .actions .btn{white-space:nowrap}.btn{border:1px solid var(--line);background:#091827;color:var(--text);padding:10px 14px;border-radius:11px}.btn.primary{background:linear-gradient(135deg,#087dcc,#20a8ff);border-color:#39baff}.btn.green{background:#087f4b;border-color:#16bd72}.btn.danger{background:#421421;border-color:#8e2940}.btn.sm{padding:7px 10px;font-size:13px}
+.grid{display:grid;grid-template-columns:minmax(300px,480px) minmax(0,1fr);gap:18px}.card{background:linear-gradient(145deg,rgba(9,24,39,.96),rgba(4,12,21,.96));border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 18px 60px #0008}.card h2,.card h3{margin:0 0 14px}.section{margin-bottom:16px}.sectionTitle{font-weight:700;margin-bottom:9px;color:#ccecff}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{margin-bottom:10px}.field label{display:block;font-size:12px;color:var(--muted);margin:0 0 5px}.field input,.field select,.field textarea{width:100%;border:1px solid #17415f;background:#04101b;color:var(--text);border-radius:10px;padding:10px;outline:none}.field textarea{min-height:78px;resize:vertical}.full{grid-column:1/-1}.totalBox{display:flex;justify-content:space-between;padding:12px;border:1px solid #17415f;border-radius:12px;background:#04101b;margin:10px 0}.muted{color:var(--muted)}
+.previewWrap{overflow:auto;display:flex;justify-content:center}.previewTools{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}.invoice{background:#fff;color:#111;width:794px;max-width:none;min-width:794px;margin:auto;aspect-ratio:210/297;padding:34px;position:relative;box-shadow:0 20px 60px #0009}.invoiceHead{display:flex;justify-content:space-between;gap:20px;border-bottom:4px solid #159fe8;padding-bottom:18px}.invoiceBrand{display:flex;align-items:center;gap:12px}.invoiceBrand img{width:85px;height:60px;object-fit:contain}.invoiceBrand strong{font-size:23px}.invoiceBrand span{display:block;color:#557080;font-size:11px}.contact{text-align:right;font-size:11px;color:#52616b}.invoiceTitle{text-align:center;font-size:30px;letter-spacing:5px;margin:18px 0;color:#0c4e75}.billGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;font-size:12px}.billGrid h4{margin:0 0 7px;color:#0b628e}.details{text-align:right}.details div{margin:4px 0}.table{width:100%;border-collapse:collapse;margin-top:18px;font-size:11px}.table th{background:#e8f5fb;color:#084d6d}.table th,.table td{border:1px solid #cbd9df;padding:8px;text-align:left}.table th:not(:first-child),.table td:not(:first-child){text-align:right}.summary{display:grid;grid-template-columns:1fr 220px;gap:20px;margin-top:16px}.sum{font-size:12px}.sum div{display:flex;justify-content:space-between;border-bottom:1px solid #e2e8eb;padding:6px 0}.status{border:2px solid #22a866;border-radius:10px;padding:15px;text-align:center;color:#117341}.status b{display:block;font-size:22px;margin-top:5px}.sig{height:55px;max-width:180px;object-fit:contain}.invoiceFoot{position:absolute;bottom:25px;left:34px;right:34px;border-top:1px solid #d4dde1;padding-top:10px;font-size:10px;color:#667}
+.saved{margin-top:18px}.search{width:100%;max-width:400px;padding:10px;border:1px solid var(--line);background:#04101b;color:#fff;border-radius:10px}.invoiceList{overflow:auto}.invoiceList table{width:100%;border-collapse:collapse;font-size:12px}.invoiceList th,.invoiceList td{padding:9px;border-bottom:1px solid #123653;text-align:left;white-space:nowrap}.pill{padding:4px 8px;border-radius:99px;font-size:11px}.paid{background:#073f29;color:#66efac}.pending{background:#4a3104;color:#ffd477}.partial{background:#073653;color:#76d9ff}
+.modal{position:fixed;z-index:5000;inset:0;background:#000b;display:none;place-items:center;padding:16px}.modal.show{display:grid}.modalBox{width:min(720px,100%);max-height:90vh;overflow:auto;background:#07111d;border:1px solid #1a5578;border-radius:18px;padding:18px}.adminPlan{display:grid;grid-template-columns:minmax(220px,1fr) 100px 120px 44px;gap:7px;margin-bottom:7px}.adminPlan input{min-width:0;width:100%;overflow:visible}.sigBox{background:#fff;border-radius:10px;overflow:hidden;border:1px solid #244b61}.sigBox canvas{display:block;width:100%;height:130px;touch-action:none}.usersSettings{border-top:1px solid var(--line);padding-top:14px}
+@media(max-width:850px){
+  .top .actions{width:100%;display:grid;grid-template-columns:1fr 1fr 1fr}
+  .top .actions .btn{width:100%;padding:9px 7px;font-size:13px}
+  .saved{overflow:hidden}
+  .invoiceList{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .invoiceList table{min-width:760px}
+  .usersSettings .row{grid-template-columns:1fr}
+
+  /* Admin: never truncate plan names on phones */
+  .modalBox{width:100%;max-width:100%;padding:16px}
+  .adminPlan{
+    grid-template-columns:minmax(0,1fr) 58px 86px 44px;
+    gap:7px;
+    padding:9px;
+    margin-bottom:9px;
+    border:1px solid #123653;
+    border-radius:12px;
+    background:#04101b;
+  }
+  .adminPlan input{
+    width:100%;
+    min-width:0;
+    height:44px;
+    padding:8px;
+    font-size:14px;
+  }
+  .adminPlan input:first-child{
+    grid-column:1/-1;
+    font-size:15px;
+  }
+  .adminPlan .btn{
+    width:44px;
+    height:44px;
+    padding:0;
+  }
+}
+.hidden{display:none!important}
+@media(max-width:850px){
+.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.app{padding:10px}
+.top{align-items:center;flex-direction:column}.brand{width:100%;justify-content:center}
+.top .actions{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.top .actions .btn{width:100%;padding:9px 6px;font-size:12px}.card{padding:12px}
+.invoice{min-width:794px}.previewWrap{justify-content:flex-start;overflow-x:auto;padding-bottom:8px}
+.adminPlan{grid-template-columns:minmax(0,1fr) 58px 86px 44px;gap:7px;padding:9px;margin-bottom:9px;border:1px solid #123653;border-radius:12px;background:#04101b}
+.adminPlan input{width:100%;min-width:0;height:44px;padding:8px;font-size:14px;overflow:visible}
+.adminPlan input:first-child{grid-column:1/-1;font-size:15px}.adminPlan .btn{width:44px;height:44px;padding:0}
+}
+@media print{body{background:#fff}.noPrint,.splash,.top,.card.formCard,.saved{display:none!important}.app{padding:0}.grid{display:block}.previewWrap{overflow:visible}.invoice{box-shadow:none;margin:0;width:210mm;height:297mm;min-width:0;max-width:none;padding:12mm}}
+</style>
+</head>
+<body>
+<div class="splash" id="splash"><div class="splashBox"><div class="bolt">ϟ</div><h1>ZYVORA INVOICE</h1><p>Loading...</p></div></div>
+<main class="app">
+<header class="top noPrint"><div class="brand"><img id="topLogo" alt="ZYVORA logo"><div><h1 id="brandName">ZYVORA FTTH</h1><small>Fast. Reliable. Connected.</small></div></div><div class="actions"><button class="btn" onclick="newInvoice()">＋ New</button><button class="btn" onclick="window.print()">Print / PDF</button><button class="btn" onclick="openAdmin()">Admin</button></div></header>
+<section class="grid">
+<div class="card formCard noPrint">
+<h2>Create Invoice</h2>
+<div class="section"><div class="sectionTitle">Customer Information</div><div class="row"><div class="field"><label>Customer Name *</label><input id="customer" placeholder="Customer name"></div><div class="field"><label>Phone Number *</label><input id="phone" value="03005115469"></div><div class="field full"><label>Address</label><input id="address" placeholder="Customer address"></div></div></div>
+<div class="section"><div class="sectionTitle">Package & Billing</div><div class="row"><div class="field full"><label>Select Package *</label><select id="package" onchange="applyPlan()"></select></div><div class="field"><label>Monthly Fee (Rs.)</label><input id="fee" type="number"></div><div class="field"><label>Discount (Rs.)</label><input id="discount" type="number" value="0" oninput="updatePreview()"></div><div class="field"><label>Billing Month</label><input id="month" type="month"></div></div></div>
+<div class="section"><div class="sectionTitle">Payment Information</div><div class="row"><div class="field"><label>Payment Status</label><select id="status" onchange="updatePreview()"><option>Paid</option><option>Partial</option><option>Pending</option><option>Unpaid</option></select></div><div class="field"><label>Amount Paid (Rs.)</label><input id="paid" type="number" value="0" oninput="updatePreview()"></div><div class="field"><label>Due Date</label><input id="due" type="date"></div><div class="field"><label>Payment Method</label><select id="method"><option>EasyPaisa</option><option>Cash</option><option>Bank Transfer</option><option>Other</option></select></div></div></div>
+<div class="section"><div class="sectionTitle">Additional Details</div><div class="field"><label>Notes</label><textarea id="notes">Thank you for choosing ZYVORA FTTH!</textarea></div></div>
+<div class="section"><div class="sectionTitle">Real Signature</div><div class="sigBox"><canvas id="sigCanvas" width="900" height="260"></canvas></div><div class="actions" style="margin-top:8px"><button class="btn sm" onclick="clearSignature()">Clear Signature</button></div></div>
+<div class="totalBox"><span>Total</span><strong id="formTotal">Rs. 0</strong></div><div class="actions"><button class="btn primary" onclick="saveInvoice()">Generate & Save Invoice</button><button class="btn green" onclick="shareWhatsApp()">WhatsApp</button></div>
+</div>
+<div class="card previewWrap"><div style="width:100%"><div class="previewTools noPrint"><button class="btn sm" onclick="downloadInvoicePNG()">Download Invoice Picture</button><button class="btn sm green" onclick="shareInvoicePicture()">Share Invoice Picture</button></div><div id="invoice"></div></div></div>
+</section>
+<section class="card saved noPrint">
+  <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+    <div>
+      <h2>Users & Monthly Payments</h2>
+      <span class="muted">All customers are stored here. Mark each month Paid or Unpaid.</span>
+    </div>
+    <button class="btn primary" onclick="openUsersSettings()">⚙ Users Settings</button>
+  </div>
+  <div id="usersSettings" class="usersSettings hidden" style="margin-top:14px">
+    <div class="row">
+      <div class="field"><label>User Search</label><input id="userSearch" placeholder="Search customer or phone..." oninput="renderUsers()"></div>
+      <div class="field"><label>Month</label><input id="userMonth" type="month" onchange="renderUsers()"></div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="closeUsersSettings()">Close Settings</button>
+      <button class="btn primary" onclick="addCurrentCustomer()">＋ Add Current Customer</button>
+    </div>
+  </div>
+  <div class="invoiceList" id="usersList" style="margin-top:14px"></div>
+</section>
+</main>
+<div class="modal" id="adminModal"><div class="modalBox"><div style="display:flex;justify-content:space-between"><h2>Admin Panel</h2><button class="btn" onclick="closeAdmin()">✕</button></div>
+<div id="adminLogin"><div class="row"><div class="field"><label>Username</label><input id="adminUser"></div><div class="field"><label>Password</label><input id="adminPass" type="password"></div></div><button class="btn primary" onclick="adminLogin()">Login</button><p class="muted" style="font-size:12px">Demo credentials: ashir / 1234. This is client-side demo authentication.</p></div>
+<div id="adminPanel" class="hidden"><div class="field"><label>Website Name</label><input id="siteName"></div><div class="field"><label>Logo from Gallery</label><input id="logoFile" type="file" accept="image/*" onchange="loadLogo(event)"></div><h3>Internet Plans</h3><div id="plansEditor"></div><div class="actions"><button class="btn" onclick="addPlan()">＋ Add Plan</button><button class="btn primary" onclick="saveAdmin()">Save Changes</button><button class="btn danger" onclick="closeAdmin()">Close</button></div></div>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+const DEFAULT_LOGO='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20220%20120%22%3E%3Crect%20width%3D%22220%22%20height%3D%22120%22%20rx%3D%2224%22%20fill%3D%22%2306111c%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%2320a8ff%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M45%2062c38-38%2092-38%20130%200%22/%3E%3Cpath%20d%3D%22M70%2082c23-23%2057-23%2080%200%22/%3E%3Cpath%20d%3D%22M100%20101h20%22/%3E%3C/g%3E%3Ccircle%20cx%3D%22110%22%20cy%3D%22101%22%20r%3D%227%22%20fill%3D%22%2355ddff%22/%3E%3Ctext%20x%3D%22110%22%20y%3D%2232%22%20fill%3D%22%23edf8ff%22%20font-family%3D%22Arial%22%20font-size%3D%2217%22%20text-anchor%3D%22middle%22%20font-weight%3D%22700%22%3EZYVORA%3C/text%3E%3C/svg%3E';
+let settings=JSON.parse(localStorage.getItem('zyvora_settings')||'null')||{websiteName:'ZYVORA FTTH',logo:DEFAULT_LOGO};
+let plans=JSON.parse(localStorage.getItem('zyvora_plans')||'null')||[{name:'ZYVORA STARTER',speed:10,price:800},{name:'ZYVORA BASIC',speed:20,price:1000},{name:'ZYVORA PRO',speed:30,price:1500}];
+let invoices=JSON.parse(localStorage.getItem('zyvora_invoices')||'[]'), users=JSON.parse(localStorage.getItem('zyvora_users')||'[]'), currentNumber=Number(localStorage.getItem('zyvora_invoice_counter')||0), signatureData='';
+const $=id=>document.getElementById(id), money=n=>'Rs. '+Number(n||0).toLocaleString('en-PK');
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function init(){
+  try{
+    $('topLogo').src=settings.logo;
+    $('brandName').textContent=settings.websiteName;
+    fillPackages();
+    let d=new Date();
+    $('month').value=d.toISOString().slice(0,7);
+    $('due').value=d.toISOString().slice(0,10);
+    $('package').value=plans[1]?.name||plans[0]?.name;
+    applyPlan();
+    renderSaved();
+    initUsers();
+    updatePreview();
+    setupSignature();
+  }catch(e){
+    console.error(e);
+  }finally{
+    setTimeout(()=>{$('splash').classList.add('hide')},850);
+  }
+}
+function fillPackages(){let old=$('package').value;$('package').innerHTML=plans.map(p=>`<option value="${esc(p.name)}">${esc(p.name)} — ${p.speed} Mbps</option>`).join('');if(plans.some(p=>p.name===old))$('package').value=old}
+function applyPlan(){let p=plans.find(x=>x.name===$('package').value);if(p)$('fee').value=p.price;updatePreview()}
+function values(){let fee=+$('fee').value||0,disc=+$('discount').value||0,paid=+$('paid').value||0,total=Math.max(0,fee-disc);return{fee,disc,paid,total,balance:Math.max(0,total-paid)}}
+function nextNo(){currentNumber++;localStorage.setItem('zyvora_invoice_counter',currentNumber);return'ZYV-'+String(currentNumber).padStart(5,'0')}
+function monthText(v){if(!v)return'';let[y,m]=v.split('-');return new Date(+y,+m-1,1).toLocaleString('en-US',{month:'long',year:'numeric'})}
+function dateText(v){if(!v)return'';let d=new Date(v+'T00:00:00');return isNaN(d)?v:d.toLocaleDateString('en-GB')}
+function updatePreview(inv=null){let v=inv||{customer:$('customer').value,phone:$('phone').value,address:$('address').value,package:$('package').value,month:$('month').value,due:$('due').value,status:$('status').value,method:$('method').value,notes:$('notes').value,signature:signatureData,...values(),invoiceNumber:'PREVIEW',date:new Date().toISOString().slice(0,10)};$('formTotal').textContent=money(v.total);let speed=(plans.find(p=>p.name===v.package)||{}).speed||'—';$('invoice').innerHTML=`<article class="invoice"><div class="invoiceHead"><div class="invoiceBrand"><img src="${esc(settings.logo)}"><div><strong>${esc(settings.websiteName)}</strong><span>Fast. Reliable. Connected.</span></div></div><div class="contact"><b>Internet Service Provider</b><br>03005115469<br>btester653@gmail.com<br>WhatsApp: +92 300 5115469</div></div><div class="invoiceTitle">INVOICE</div><div class="billGrid"><div><h4>BILL TO</h4><b>${esc(v.customer||'Customer Name')}</b><br>${esc(v.phone||'')}<br>${esc(v.address||'')}</div><div class="details"><h4>INVOICE DETAILS</h4><div><b>Invoice No:</b> ${esc(v.invoiceNumber)}</div><div><b>Invoice Date:</b> ${dateText(v.date)}</div><div><b>Due Date:</b> ${dateText(v.due)}</div><div><b>Billing Month:</b> ${esc(monthText(v.month))}</div></div></div><table class="table"><thead><tr><th>Description</th><th>Speed</th><th>Monthly Fee</th><th>Discount</th><th>Amount</th></tr></thead><tbody><tr><td><b>${esc(v.package||'Internet Package')}</b><br><small>Fiber Internet Package</small></td><td>${esc(speed)} Mbps</td><td>${money(v.fee)}</td><td>${money(v.disc)}</td><td>${money(v.total)}</td></tr></tbody></table><div class="summary"><div class="sum"><h4>PAYMENT SUMMARY</h4><div><span>Monthly Fee</span><b>${money(v.fee)}</b></div><div><span>Discount</span><b>${money(v.disc)}</b></div><div><span>Total Amount</span><b>${money(v.total)}</b></div><div><span>Amount Paid</span><b>${money(v.paid)}</b></div><div><span>Balance</span><b>${money(v.balance)}</b></div><div><span>Method</span><b>${esc(v.method)}</b></div></div><div class="status"><span>Payment Status</span><b>${esc(String(v.status||'Pending').toUpperCase())}</b><small>${v.balance?'Balance remaining: '+money(v.balance):'Thank you for your payment!'}</small></div></div><div style="margin-top:18px;font-size:11px"><b>Package Features</b><ul style="line-height:1.8;margin-top:5px"><li>Download / Upload Speed as subscribed</li><li>Unlimited data subject to service policy</li><li>Customer support</li></ul></div>${v.signature?`<div style="margin-top:12px"><img class="sig" src="${esc(v.signature)}"><div style="font-size:10px;border-top:1px solid #999;width:190px;padding-top:3px">Authorized Signature</div></div>`:''}<div class="invoiceFoot">${esc(v.notes||'Thank you for choosing ZYVORA FTTH!')}<br>For queries: 03005115469 | btester653@gmail.com</div></article>`}
+function collect(){return{id:Date.now().toString(),invoiceNumber:nextNo(),date:new Date().toISOString().slice(0,10),customer:$('customer').value.trim(),phone:$('phone').value.trim(),address:$('address').value.trim(),package:$('package').value,month:$('month').value,due:$('due').value,status:$('status').value,method:$('method').value,notes:$('notes').value,signature:signatureData,...values()}}
+function saveInvoice(){if(!$('customer').value.trim())return alert('Please enter customer name.');let inv=collect();invoices.unshift(inv);localStorage.setItem('zyvora_invoices',JSON.stringify(invoices));addUserFromInvoice(inv);renderSaved();updatePreview(inv);alert('Invoice '+inv.invoiceNumber+' saved successfully.')}
+function loadInvoice(id){let v=invoices.find(x=>x.id===id);if(!v)return;['customer','phone','address','package','month','due','status','method','notes'].forEach(k=>$(k).value=v[k]||'');$('fee').value=v.fee;$('discount').value=v.disc;$('paid').value=v.paid;signatureData=v.signature||'';updatePreview(v);window.scrollTo({top:0,behavior:'smooth'})}
+function deleteInvoice(id){if(!confirm('Delete this invoice?'))return;invoices=invoices.filter(x=>x.id!==id);localStorage.setItem('zyvora_invoices',JSON.stringify(invoices));renderSaved()}
+function renderSaved(){let q='';let list=invoices.filter(x=>[x.customer,x.invoiceNumber,x.phone,x.package].join(' ').toLowerCase().includes(q));$('savedList').innerHTML=list.length?`<table><thead><tr><th>Invoice</th><th>Customer</th><th>Package</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>${list.map(x=>`<tr><td>${esc(x.invoiceNumber)}</td><td>${esc(x.customer)}</td><td>${esc(x.package)}</td><td>${money(x.total)}</td><td><span class="pill ${x.status==='Paid'?'paid':x.status==='Partial'?'partial':'pending'}">${esc(x.status)}</span></td><td>${dateText(x.date)}</td><td><button class="btn sm" onclick="loadInvoice('${x.id}')">View</button> <button class="btn sm danger" onclick="deleteInvoice('${x.id}')">Delete</button></td></tr>`).join('')}</tbody></table>`:'<p class="muted">No saved invoices yet.</p>'}
+
+function initUsers(){
+  let d=new Date();
+  $('userMonth').value=d.toISOString().slice(0,7);
+  renderUsers();
+}
+function openUsersSettings(){
+  $('usersSettings').classList.remove('hidden');
+  renderUsers();
+}
+function closeUsersSettings(){
+  $('usersSettings').classList.add('hidden');
+}
+function addCurrentCustomer(){
+  let name=$('customer').value.trim(), phone=$('phone').value.trim(), address=$('address').value.trim();
+  if(!name)return alert('Please enter customer name first.');
+  let existing=users.find(u=>u.phone===phone && phone);
+  if(existing){
+    existing.name=name; existing.address=address;
+    existing.package=$('package').value; existing.monthlyFee=+$('fee').value||0;
+  }else{
+    users.push({
+      id:Date.now().toString(), name, phone, address,
+      package:$('package').value, monthlyFee:+$('fee').value||0,
+      months:{}
+    });
+  }
+  localStorage.setItem('zyvora_users',JSON.stringify(users));
+  $('usersSettings').classList.remove('hidden');
+  renderUsers();
+  alert('Customer added to Users.');
+}
+function addUserFromInvoice(inv){
+  if(!inv || !inv.customer)return;
+  let existing=users.find(u=>u.phone===inv.phone && inv.phone);
+  if(!existing) existing=users.find(u=>u.name.toLowerCase()===inv.customer.toLowerCase());
+  if(existing){
+    existing.name=inv.customer; existing.phone=inv.phone; existing.address=inv.address;
+    existing.package=inv.package; existing.monthlyFee=inv.fee;
+  }else{
+    existing={id:Date.now().toString()+Math.random(),name:inv.customer,phone:inv.phone,address:inv.address,package:inv.package,monthlyFee:inv.fee,months:{}};
+    users.push(existing);
+  }
+  let m=inv.month || new Date().toISOString().slice(0,7);
+  existing.months=existing.months||{};
+  existing.months[m]={status:(inv.status==='Paid'?'Paid':'Unpaid'),paid:inv.paid||0,invoiceNumber:inv.invoiceNumber};
+  localStorage.setItem('zyvora_users',JSON.stringify(users));
+  renderUsers();
+}
+function setUserPayment(id,status){
+  let u=users.find(x=>x.id===id); if(!u)return;
+  let m=$('userMonth').value || new Date().toISOString().slice(0,7);
+  u.months=u.months||{};
+  u.months[m]=Object.assign({},u.months[m]||{},{
+    status:status,
+    paid:status==='Paid'?(u.monthlyFee||0):(u.months[m]?.paid||0)
+  });
+  localStorage.setItem('zyvora_users',JSON.stringify(users));
+  renderUsers();
+}
+function renderUsers(){
+  let box=$('usersList'); if(!box)return;
+  let month=$('userMonth')?.value || new Date().toISOString().slice(0,7);
+  let q=($('userSearch')?.value||'').toLowerCase().trim();
+  let list=users.filter(u=>(!q || (u.name+' '+u.phone+' '+u.package).toLowerCase().includes(q)));
+  if(!list.length){
+    box.innerHTML='<p class="muted">No users yet. Create an invoice, then click Users Settings → Add Current Customer.</p>';
+    return;
+  }
+  box.innerHTML=`<table><thead><tr><th>User</th><th>Phone</th><th>Package</th><th>Monthly Fee</th><th>${esc(monthText(month))}</th><th>Action</th></tr></thead><tbody>${
+    list.map(u=>{
+      let p=(u.months||{})[month]||{status:'Unpaid',paid:0};
+      let cls=p.status==='Paid'?'paid':'pending';
+      return `<tr>
+        <td><b>${esc(u.name)}</b><br><small>${esc(u.address||'')}</small></td>
+        <td>${esc(u.phone||'')}</td>
+        <td>${esc(u.package||'—')}</td>
+        <td>${money(u.monthlyFee)}</td>
+        <td><span class="pill ${cls}">${p.status}</span></td>
+        <td><button class="btn sm green" onclick="setUserPayment('${u.id}','Paid')">Paid</button> <button class="btn sm danger" onclick="setUserPayment('${u.id}','Unpaid')">Unpaid</button></td>
+      </tr>`;
+    }).join('')
+  }</tbody></table>`;
+}
+function newInvoice(){$('customer').value='';$('address').value='';$('phone').value='03005115469';$('discount').value=0;$('paid').value=0;$('status').value='Paid';$('method').value='EasyPaisa';$('notes').value='Thank you for choosing ZYVORA FTTH!';signatureData='';clearSignature();let d=new Date();$('month').value=d.toISOString().slice(0,7);$('due').value=d.toISOString().slice(0,10);applyPlan()}
+async function shareWhatsApp(){let canvas=await invoiceCanvas();if(!canvas)return;canvas.toBlob(async blob=>{let file=new File([blob],'ZYVORA-Invoice-A4.png',{type:'image/png'});let text='Invoice from '+settings.websiteName;if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){try{await navigator.share({title:'ZYVORA Invoice',text,files:[file]});return}catch(e){}}let url='https://wa.me/923005115469?text='+encodeURIComponent(text);window.open(url,'_blank');alert('WhatsApp image sharing is not supported by this browser. The A4 invoice picture is ready; share it from Gallery/Files.');},'image/png')}
+async function invoiceCanvas(){if(!window.html2canvas){alert('Invoice image tool is still loading. Please try again.');return null}let el=$('invoice').querySelector('.invoice');if(!el)return null;return await html2canvas(el,{scale:3,useCORS:true,backgroundColor:'#ffffff',width:el.scrollWidth,height:el.scrollHeight,windowWidth:el.scrollWidth})}
+async function downloadInvoicePNG(){let canvas=await invoiceCanvas();if(!canvas)return;let a=document.createElement('a');a.download='ZYVORA-Invoice.png';a.href=canvas.toDataURL('image/png');a.click()}
+async function shareInvoicePicture(){let canvas=await invoiceCanvas();if(!canvas)return;canvas.toBlob(async blob=>{let file=new File([blob],'ZYVORA-Invoice.png',{type:'image/png'});if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}))){try{await navigator.share({title:'ZYVORA Invoice',text:'Invoice from '+settings.websiteName,files:[file]})}catch(e){}}else{a=await downloadInvoicePNG();alert('Direct image sharing is not supported here. The invoice picture was downloaded; share it from Gallery/Files.')}},'image/png')}
+function openAdmin(){$('adminModal').classList.add('show');$('adminLogin').classList.remove('hidden');$('adminPanel').classList.add('hidden')}
+function closeAdmin(){$('adminModal').classList.remove('show')}
+function adminLogin(){if($('adminUser').value==='ashir'&&$('adminPass').value==='1234'){$('adminLogin').classList.add('hidden');$('adminPanel').classList.remove('hidden');$('siteName').value=settings.websiteName;renderPlans()}else alert('Invalid admin login.')}
+function renderPlans(){$('plansEditor').innerHTML=plans.map((p,i)=>`<div class="adminPlan"><input value="${esc(p.name)}" onchange="plans[${i}].name=this.value"><input type="number" value="${p.speed}" onchange="plans[${i}].speed=+this.value"><input type="number" value="${p.price}" onchange="plans[${i}].price=+this.value"><button class="btn danger" onclick="plans.splice(${i},1);renderPlans();fillPackages()">×</button></div>`).join('')}
+function addPlan(){plans.push({name:'NEW PLAN',speed:0,price:0});renderPlans();fillPackages()}
+function loadLogo(e){let f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024)return alert('Logo must be 5 MB or smaller.');let r=new FileReader();r.onload=()=>{settings.logo=r.result;$('topLogo').src=settings.logo;updatePreview()};r.readAsDataURL(f)}
+function saveAdmin(){settings.websiteName=$('siteName').value.trim()||'ZYVORA FTTH';localStorage.setItem('zyvora_settings',JSON.stringify(settings));localStorage.setItem('zyvora_plans',JSON.stringify(plans));$('brandName').textContent=settings.websiteName;fillPackages();applyPlan();alert('Settings saved.')}
+function setupSignature(){let c=$('sigCanvas'),ctx=c.getContext('2d');ctx.lineWidth=4;ctx.lineCap='round';ctx.strokeStyle='#111';let down=false,last={x:0,y:0};function pos(e){let r=c.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return{x:(p.clientX-r.left)*c.width/r.width,y:(p.clientY-r.top)*c.height/r.height}}function start(e){e.preventDefault();down=true;last=pos(e)}function move(e){if(!down)return;e.preventDefault();let p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;signatureData=c.toDataURL('image/png');updatePreview()}function end(){down=false}c.addEventListener('mousedown',start);c.addEventListener('mousemove',move);window.addEventListener('mouseup',end);c.addEventListener('touchstart',start,{passive:false});c.addEventListener('touchmove',move,{passive:false});window.addEventListener('touchend',end)}
+function clearSignature(){let c=$('sigCanvas');c.getContext('2d').clearRect(0,0,c.width,c.height);signatureData='';updatePreview()}
+init();
+</script>
+</body>
+</html>
